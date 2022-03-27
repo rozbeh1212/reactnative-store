@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import productsReducer from "./store/reducers/products";
 import ShopNavigationScreen from "./navigation/ShopNavigationScreen";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
+//import { composeWithDevTools } from "redux-devtools-extension";
+import cartReducer from "./store/reducers/cart";
 
 // combineReducers is a function that takes an object of reducers and returns a function that combines them into one
 const rootReducer = combineReducers({
   products: productsReducer,
+  cart : cartReducer 
 });
 
 // store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer,
+//  composeWithDevTools()
+);
 const fetchFonts = () => {
   return Font.loadAsync({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),

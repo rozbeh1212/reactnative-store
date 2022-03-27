@@ -1,15 +1,18 @@
 //import liraries
 import React, { Component } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useSlector } from "react-redux";
+import { useSlector, useDispatch } from "react-redux";
 import ProducItem from "../../components/shop/ProductItem";
+import * as cartActions from "../../store/actions/cart";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "../../components/UI/HeaderButton";
 
 const ProductItem = (props) => {};
 // create a component
 const ProductsOverviewScreen = () => {
   // products userSelector is a function that takes the state and returns the userProducts array
   const products = useSlector((state) => state.products.availableproducts);
-
+     const dispatch = useDispatch(); // useDispatch is a hook that returns the dispatch function
   return (
     <FlatList
       data={products}
@@ -25,7 +28,11 @@ const ProductsOverviewScreen = () => {
               productTitle: itemData.item.title
             }); // return item  detail
           }}
-          onAddToCart={() => {}}
+          onAddToCart={() => {
+            dispatch(cartActions.addToCart(itemData.item)); // dispatch the addToCart action with the itemData.item as the argument  
+
+
+          }}
         />
       )}
     />
