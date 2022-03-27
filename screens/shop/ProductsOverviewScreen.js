@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList , Platform} from "react-native";
 import { useSlector, useDispatch } from "react-redux";
 import ProducItem from "../../components/shop/ProductItem";
 import * as cartActions from "../../store/actions/cart";
@@ -39,8 +39,17 @@ const ProductsOverviewScreen = () => {
   );
 };
 
-ProductsOverviewScreen.navigationOptions = {
+ProductsOverviewScreen.navigationOptions = (navData) => {
+  return {
   headerTitle: "All Products",
+  headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    <Item title="cart" iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+      onPress={() => { 
+        navData.navigation.navigate("Cart"); // navigate to cart screen
+      }}
+    />
+    </HeaderButtons>
+   }; 
 };
 
 // define your styles
