@@ -7,11 +7,14 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 //import { composeWithDevTools } from "redux-devtools-extension";
 import cartReducer from "./store/reducers/cart";
+import ordersReducer from "./store/reducers/orders";
+
 
 // combineReducers is a function that takes an object of reducers and returns a function that combines them into one
 const rootReducer = combineReducers({
-  products: productsReducer,
-  cart : cartReducer 
+  products: productsReducer, // products is the key of the products reducer to  to combine the products reducer with  other reducers
+  cart: cartReducer , // cart is the key of the cart reducer to  to combine the cart reducer with  other reducers
+  orders: ordersReducer, // orders is the key of the orders reducer to  to combine the orders reducer with  other reducers
 });
 
 // store
