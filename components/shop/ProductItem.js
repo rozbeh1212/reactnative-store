@@ -10,7 +10,6 @@ import {
  TouchableNativeFeedback,
   Platform
 } from "react-native";
-
 // create a component
 const ProducItem = (props) => {
  let TouchableCmp = TouchableOpacity
