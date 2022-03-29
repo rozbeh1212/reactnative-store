@@ -1,10 +1,9 @@
 //import liraries
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import {  StyleSheet, Platform } from "react-native";
 import { HeaderButton } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constents/Colors";
-import { Platform } from "react-native-web";
 
 // create a component
 const HeaderButton = (props) => {
