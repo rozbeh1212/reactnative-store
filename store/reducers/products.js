@@ -1,44 +1,24 @@
-
 import { Product } from "../../data/dummy-data";
 
 // imitial state
 
 const initialState = {
-
-  availableproducts: Product , // products array
-  userProducts: Product.filter(product => product.ownerId ==='u1')// products array ,
+  availableproducts: Product, // products array
+  userProducts: Product.filter((product) => product.ownerId === "u1"), // products array ,
 };
 
 export default (state = initialState, action) => {
-  
-
   switch (action.type) {
-    case "SET_PRODUCTS"
+    case DELETE_PRODUCT: /* if the action type is DELETE_PRODUCT we are deleting the product from the products array and we are updating the userProducts array with the new userProducts array and 
+                        we are updating the total amount of the cart with the new total amount */           
       return {
-        availableproducts: action.products,
-        userProducts: action.products.filter(
-          product => product.ownerId === "u1"
+        ...state,  
+        userProducts: state.userProducts.filter(        
+          (product) => product.id !== action.pid
         ),
-      };
-    case "ADD_PRODUCT":
-      return {
-        ...state,
-        availableproducts: state.availableproducts.concat(action.product),
-        userProducts: state.userProducts.concat(action.product),
-      };
-    case "REMOVE_PRODUCT":
-      return {
-        ...state,
         availableproducts: state.availableproducts.filter(
-          product => product.id !== action.pid
-        ),
-        userProducts: state.userProducts.filter(
-          product => product.id !== action.pid
-        ),
+          (product) => product.id !== action.pid
       };
-    default:
-      return state;
   }
- 
-
+  return state;
 };

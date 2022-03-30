@@ -23,7 +23,7 @@ const ProducItem = (props) => {
   return (
     <View styles={styles.product}>
       <View style={styles.touch}>
-        <TouchableCmp onPress={props.onViewDetail} useForeground>
+        <TouchableCmp onPress={props.onSelect} useForeground>
           <View>
             <Image styles={styles.Image} source={{ uri: props.image }} />
             <View style={styles.desplayed}>
@@ -31,16 +31,7 @@ const ProducItem = (props) => {
               <Text styles={styles.price}>${props.price.toFixed(2)}</Text>
             </View>
             <View styles={styles.action}>
-              <Button
-                color={colors.primary}
-                title='View Details'
-                onPress={props.onViewDetail}
-              />
-              <Button
-                color={colors.primary}
-                title='to cart'
-                onPress={props.onAddToCart}
-              />
+            {props.children} // props children is the buttons from ProductsOverviewScreen component that we pass in the ProductItem 
             </View>
           </View>
         </TouchableCmp>
@@ -82,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", // arrange the buttons in a row
     justifyContent: "space-between",
     alignItems: "center", // align items vertically
-    height: "25%",
+    height: "23%",
     paddingHorizontal: 20,
   },
 

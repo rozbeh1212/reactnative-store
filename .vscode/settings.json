@@ -1,0 +1,11 @@
+{
+  "blockman.n03MaxDepth": 17,
+  "blockman.n04ColorComboPreset": "Classic Dark 1 (Super gradients)",
+  "blockman.n04Sub01ColorComboPresetForDarkTheme": "Classic Dark 1 (Super gradients)",
+  "blockman.n04Sub02ColorComboPresetForLightTheme": "Classic Dark 1 (Super gradients)",
+  "blockman.n04Sub04RightSideBaseOfBlocks": "Rightmost Edge Of File Content",
+  "blockman.n04Sub05MinDistanceBetweenRightSideEdges": 50,
+  "blockman.n23AnalyzeSquareBrackets": true,
+  "blockman.n24AnalyzeRoundBrackets": true,
+  "blockman.n28TimeToWaitBeforeRerenderAfterLastChangeEvent": 1
+}
