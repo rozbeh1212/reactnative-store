@@ -1,13 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Platform,
-  Button,
-} from "react-native";
+import { FlatList, Button, Platform, Alert } from "react-native";
 import ProducItem from "../../components/shop/ProductItem";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -23,6 +16,19 @@ const UserProductsScreen = (props) => {
   const editedProductHandler = (id) => { // editedProductHandler is a function that is used to navigate to the edit product
     props.navigation.navigate("EditProduct", { productId: id });
   }
+
+   const deleteHandler = (id) => {
+     Alert.alert("Are you sure?", "Do you really want to delete this item?", [
+       { text: "No", style: "default" },
+       {
+         text: "Yes",
+         style: "destructive",
+         onPress: () => {
+           dispatch(productsActions.deleteProduct(id));
+         },
+       },
+     ]);
+   };
   return (
     <FlatList
       data={userProducts}

@@ -11,81 +11,77 @@ import {
   Platform
 } from "react-native";
 // create a component
-const ProducItem = (props) => {
- let TouchableCmp = TouchableOpacity
- if (Platform.OS === "android" && Platform.Version >= 21) {
+import Card from "../UI/Card";
 
-  TouchableCmp = TouchableNativeFeedback 
- } 
+const ProductItem = (props) => {
+  let TouchableCmp = TouchableOpacity;
 
-
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
 
   return (
-    <View styles={styles.product}>
-      <View style={styles.touch}>
+    <Card style={styles.product}>
+      <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View>
-            <Image styles={styles.Image} source={{ uri: props.image }} />
-            <View style={styles.desplayed}>
-              <Text styles={styles.title}>{props.title}</Text>
-              <Text styles={styles.price}>${props.price.toFixed(2)}</Text>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={{ uri: props.image }} />
             </View>
-            <View styles={styles.action}>
-            {props.children} // props children is the buttons from ProductsOverviewScreen component that we pass in the ProductItem 
+            <View style={styles.details}>
+              <Text style={styles.title}>{props.title}</Text>
+              <Text style={styles.price}>${props.price.toFixed(2)}</Text>
             </View>
+            <View style={styles.actions}>{props.children}</View>
           </View>
         </TouchableCmp>
       </View>
-    </View>
+    </Card>
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   product: {
-    shadowColor: "black",
-    shadowOpacity: 0.5, // 0 to 1
-    shadowOffset: { width: 0, height: 2 }, //
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
     height: 300,
-  margin: 20,
-  }, // product
-  Image: {
-    width: "100%", // 100% of the image width will be displayed
-    height: "60%", // 60% of the height of the view
-  }, // Image
+    margin: 20,
+  },
+  touchable: {
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  imageContainer: {
+    width: "100%",
+    height: "60%",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  details: {
+    alignItems: "center",
+    height: "17%",
+    padding: 10,
+  },
   title: {
     fontFamily: "open-sans-bold",
     fontSize: 18,
-    marginVertical: 4,
-  }, // title
-
+    marginVertical: 2,
+  },
   price: {
     fontFamily: "open-sans",
+    fontSize: 14,
     color: "#888",
-    fontSize: 16,
-  }, // price
-
-  action: {
-    flexDirection: "row", // arrange the buttons in a row
+  },
+  actions: {
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center", // align items vertically
+    alignItems: "center",
     height: "23%",
     paddingHorizontal: 20,
   },
-
-  desplayed: {
-    alignItems: "center", // align items vertically
-    height: "15%",
-    padding: "10px",
- },
- touch: {
-  overflow: "hidden",
-  borderRadius: 10,
- }
 });
 
-export default ProducItem;
+export default ProductItem;

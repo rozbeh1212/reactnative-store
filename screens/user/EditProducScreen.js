@@ -5,33 +5,49 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Platform,
+ Platform,
+  Alert
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import * as productsActions from "../../store/actions/products";
 import HeaderButton from "../../components/UI/HeaderButton";
 
 const EditProductScreen = (props) => {
-  const prodId = props.navigation.getParam("productId"); 
+  const prodId = props.navigation.getParam("productId");
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((prod) => prod.id === prodId)
   );
-
-  const [title, setTitle] = useState(editedProduct ? editedProduct.title : ""); // if editedProduct is not null, set title to editedProduct.title, else set title to empty string  
-  const [imageUrl, setImageUrl] = useState( // if editedProduct is not null, set imageUrl to editedProduct.imageUrl, else set imageUrl to empty string 
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState(editedProduct ? editedProduct.title : ""); // if editedProduct is not null, set title to editedProduct.title, else set title to empty string
+  const [imageUrl, setImageUrl] = useState(
+    // if editedProduct is not null, set imageUrl to editedProduct.imageUrl, else set imageUrl to empty string
     editedProduct ? editedProduct.imageUrl : ""
   );
-  const [price, setPrice] = useState(""); 
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState(
     editedProduct ? editedProduct.description : ""
   );
 
-  const submitHandler = useCallback(() => { // submitHandler is a callback function that is called when the user presses the save button  (the save button is set to the onPress property of the save button in the navigationOptions)
-    console.log("Submitting!");
-  }, []);
+ 
+  const submitHandler = useCallback(() => {
+    // submitHandler is a callback function that is called when the user presses the save button  (the save button is set to the onPress property of the save button in the navigationOptions)
 
-  useEffect(() => {  //  useEffect is a hook that runs a piece of code based on a specific condition. The code inside the useEffect will run when the screen is rendered or when the screen is navigated to. 
+    if (editedProduct) {
+      dispatch(
+        // dispatch the editProduct action with the editedProduct as the argument  (the editProduct action is defined in the productsActions file)
+        productsActions.updateProduct(prodId, title, imageUrl, description)
+      );
+    } else {
+      dispatch(
+        productsActions.createProduct(title, description, imageUrl, +price)
+      );
+    }
+    props.navigation.goBack();
+    // dispatch the createProduct action with the title, description, imageUrl, and price as the arguments (the createProduct action is defined in the productsActions file)
+  }, [dispatch, prodId, title, description, imageUrl, price]);// useCallback is used to memoize the submitHandler function so that it does not re-render every time the submitHandler function is called
+
+  useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
@@ -77,10 +93,10 @@ const EditProductScreen = (props) => {
   );
 };
 
-EditProductScreen.navigationOptions = (navData) => { 
+EditProductScreen.navigationOptions = (navData) => {
   const submitFn = navData.navigation.getParam("submit");
   return {
-    headerTitle: navData.navigation.getParam("productId") 
+    headerTitle: navData.navigation.getParam("productId")
       ? "Edit Product"
       : "Add Product",
     headerRight: (
