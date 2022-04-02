@@ -7,5 +7,18 @@
   "blockman.n04Sub05MinDistanceBetweenRightSideEdges": 50,
   "blockman.n23AnalyzeSquareBrackets": true,
   "blockman.n24AnalyzeRoundBrackets": true,
-  "blockman.n28TimeToWaitBeforeRerenderAfterLastChangeEvent": 1
+  "blockman.n28TimeToWaitBeforeRerenderAfterLastChangeEvent": 1,
+  "editor.inlayHints.enabled": false,
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggest.showInlineDetails": true,
+  "editor.colorDecorators": true,
+  "editor.peekWidgetDefaultFocus": "tree",
+  "github.copilot.inlineSuggest.enable": true,
+  "javascript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": false
 }
