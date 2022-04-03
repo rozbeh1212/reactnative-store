@@ -15,8 +15,9 @@ export const fetchProducts = () => {
         // fetch  product from database and return a promise that is resolved when the product is created
       );
 
-      if (!response.ok) { // if the response is not ok, throw an error
-        throw new Error ('Somthing went wrong') 
+      if (!response.ok) {
+        // if the response is not ok, throw an error
+        throw new Error("Somthing went wrong");
       }
 
       const restData = await response.json();
@@ -37,19 +38,30 @@ export const fetchProducts = () => {
       dispatch({ type: SET_PRODUCTS, products: loadedProducts }); // dispatch the SET_PRODUCTS action with the loadedProducts array as the products property of the action object passed to the dispatch function
       // dispatch use setproducts and loaded Products to set the products state  in the reducer function to be executed when the action is executed
     } catch (err) {
-      throw err; // 
+      throw err; //
     }
   };
 };
 
 export const deleteProduct = (productId) => {
-  return { type: DELETE_PRODUCT, pid: productId }; 
+  return async (dispatch) => {
+    await fetch(
+      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${productId}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    dispatch({ type: DELETE_PRODUCT, pid: productId });
+  };
 };
+
+// return { type: DELETE_PRODUCT, pid: productId };
+// };
 
 export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch) => {
     // async is a function that returns a promise that is resolved when the product is created.
-    const response = await fetch( 
+    const response = await fetch(
       // fetch  product from database and return a promise that is resolved when the product is created
       "https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products.json",
       {
@@ -82,13 +94,23 @@ export const createProduct = (title, description, imageUrl, price) => {
   };
 };
 export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    pid: id,
-    productData: {
-      title,
-      description,
-      imageUrl,
-    },
+  // update product action creator with product id, title, description, imageUrl as parameters and return an action object to update
+  return async (dispatch) => {
+    // async is a function that returns a promise that is resolved when the product is created.
+    await fetch(
+      //
+      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${id}.json`, // requestInfo input is the url of the product  that is fetched from the database  by using the id of the product that is passed to the action creator
+      {
+        method: "PATCH", // patch is a method that is used to patch the product that is fetched from the database  by using the id of the product that is passed
+        headers: {
+          contentType: "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+        }),
+      }
+    );
   };
 };

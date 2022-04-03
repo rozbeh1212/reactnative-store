@@ -50,7 +50,7 @@ const ProductsOverviewScreen = () => {
     loadProducts();
   }, [dispatch, loadProducts]); //  [] is an array that is used to prevent the function from being called again and again when the component is re-rendered so products can be fetched only once when the component is rendered
 
-  const SelectItemHandler = (id, title) => {
+  const SelectItemHandler = (id, title) => { // SelectItemHandler is a function that is used to select the product when the user clicks on the product and the id and title of the product are passed to it
     props.navigation.navigate("ProductDetail", {
       productId: id,
       productTitle: title,
@@ -98,7 +98,7 @@ const ProductsOverviewScreen = () => {
           title={itemData.item.title} // title is the property of the item in the array of products from productItem
           price={itemData.item.price} // price is the property of the item in the array of products from productItem
           onSelect={() => {
-            SelectItemHandler(itemData.item.id, itemData.item.title);
+            SelectItemHandler(itemData.item.id, itemData.item.title); 
           }}
         >
           <Button
