@@ -7,7 +7,7 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 //import { composeWithDevTools } from "redux-devtools-extension";
 import cartReducer from "./store/reducers/cart";
-import ordersReducer from "./store/reducers/orders";
+import ordersReducer from "./store/reducers/order";
 import ReduxTHunk from "redux-thunk";
 
 // combineReducers is a function that takes an object of reducers and returns a function that combines them into one

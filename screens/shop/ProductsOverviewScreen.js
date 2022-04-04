@@ -8,12 +8,12 @@ import {
   FlatList,
   Platform,
   Button,
-  StyleSheet,
+  
 } from "react-native";
 import { useSlector, useDispatch } from "react-redux";
 import ProducItem from "../../components/shop/ProductItem";
 import * as cartActions from "../../store/actions/cart";
-import * as productsActions from "../../store/actions/priducts";
+import * as productsActions from "../../store/actions/products";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";

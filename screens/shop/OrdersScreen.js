@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, Platform,ActivityIndicator,Text, StyleSheet} from "react-native";
+import { FlatList, Platform,ActivityIndicator,Text, StyleSheet} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";

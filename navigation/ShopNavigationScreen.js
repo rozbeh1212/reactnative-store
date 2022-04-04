@@ -8,7 +8,7 @@ import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import EditProductScreen from "../screens/user/EditProducScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
-import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
+import ProductDetailScreen from "../screens/shop/ProductDeatailScreen";
 import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import Colors from "../constents/Colors";
