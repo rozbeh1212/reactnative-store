@@ -1,16 +1,23 @@
 import React from "react";
-import { View, Text, FlatList, Button, StyleSheet } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { View, Text, FlatList, Button, StyleSheet,ActivityIndicator } from "react-native";
+import { useSelector, useDispatch, useState } from "react-redux";
 import * as cartActions from "../../store/actions/cart";
 import * as orderActions from "../../store/actions/order";
 import Colors from "../../constants/Colors";
 import CartItem from "../../components/shop/CartItem";
 import Card from "../../components/UI/Card";
+import { async } from "validate.js";
+import { set } from "react-native-reanimated";
+
+
+
+
 const CartScreen = (props) => {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount); // cartTotalAmount is the total amount of the cart
   const cartItems = useSelector((state) => {
     // cartItems is the array of the cart items with the productId, productTitle, productPrice, quantity, sum
     const transformedCartItems = [];
+    const [isLoading, setIsLoading] = useState(false);
     for (const key in state.cart.items) {
       /* for (const key in state.cart.items) is iterating through the cartItems object and adding the key and the value to the transformedCartItems to transform the cartItems object to an array of objects
                                             transformedCartItems holds the cartItems object with the productId, productTitle, productPrice, quantity, sum in array */
@@ -32,6 +39,16 @@ const CartScreen = (props) => {
     );
   });
   const dispatch = useDispatch();
+  const sendOrderHandler = async () => {
+    setIsLoading(true);
+    await dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); // dispatch the addOrder action with the cartItems and cartTotalAmount as the arguments
+  
+   setIsLoading(false);
+
+
+  };
+
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -39,14 +56,18 @@ const CartScreen = (props) => {
           Total:{" "}
           <Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2)) * 100 / 100}</Text>
         </Text>
-        <Button
-          color={Colors.accent}
-          title='Order Now'
-          disabled={cartItems.length === 0}
-          onPress={() => {
-            dispatch(orderActions.addOrder(cartItems, cartTotalAmount)); // dispatch the addOrder action with the cartItems and cartTotalAmount as the arguments
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={Colors.primary} />
+        ) : (
+          <Button
+              color={Colors.accent}
+              title='Order Now'
+              disabled={cartItems.length === 0}
+              onPress={ sendOrderHandler}
+              />
+          )}
+        
+       
       </Card>
       <FlatList
         data={cartItems}
