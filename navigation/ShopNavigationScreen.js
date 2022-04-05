@@ -1,8 +1,9 @@
 import React from "react";
 import {
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer,
+  createStackNavigator, 
+  createDrawerNavigator, //  createDrawerNavigator create a new drawer navigation navigator 
+  createAppContainer, // createAppContainer is a function that is used to create the navigation stack
+  createSwitchNavigator, // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
 } from "react-navigation";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,6 +14,7 @@ import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import Colors from "../constents/Colors";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
+import AuthScreen from "../screens/user/AuthScreen";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -97,4 +99,15 @@ const ShopNavigator = createDrawerNavigator(
   }
 );
 
-export default createAppContainer(ShopNavigator);
+const AuthNavigator = createStackNavigator({ 
+Auth: AuthScreen,
+}, {
+  defaultNavOptions: defaultNavOptions,
+})
+const MainNavigator = createSwitchNavigator( // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
+  {
+    Auth: AuthNavigator, 
+    Shop: ShopNavigator,
+  })
+
+export default createAppContainer(MainNavigator);
