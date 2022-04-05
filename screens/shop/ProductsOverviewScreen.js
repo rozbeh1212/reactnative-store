@@ -25,11 +25,14 @@ const ProductsOverviewScreen = () => {
   const dispatch = useDispatch(); // useDispatch is a hook that returns the dispatch function
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
+
   const loadProducts = useCallback(async () => {
     // useCallback is a hook that returns a memoized version of the function that is passed to it
     setError(null); // setError is a function that is used to set the error state of the component when an error occurs during the fetching of the products from the server and null means no error occurred during the fetching of the products from the server
-    setIsLoading(true); // set the isLoading state to true when the products are Loading from the server
-
+   // setIsLoading(true); // set the isLoading state to true when the products are Loading from the server
+   setIsLoading(true); // set the isLoading state to true when the products are Loading from the server
     try {
       await dispatch(productsActions.fetchProducts()); // fetchProducts is a function that fetch the products from the server and return the products array
     } catch (err) {
@@ -47,7 +50,10 @@ const ProductsOverviewScreen = () => {
   }, [loadProducts]); 
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    })
   }, [dispatch, loadProducts]); //  [] is an array that is used to prevent the function from being called again and again when the component is re-rendered so products can be fetched only once when the component is rendered
 
   const SelectItemHandler = (id, title) => { // SelectItemHandler is a function that is used to select the product when the user clicks on the product and the id and title of the product are passed to it
@@ -90,6 +96,8 @@ const ProductsOverviewScreen = () => {
 
   return (
     <FlatList
+      onRefresh={loadProducts} // this is a property that is used to refresh the products when the user pulls down the screen
+      refreshing={isRefreshing} // refreshing is a property that is used to show the loading indicator when the products are being fetched from the server
       data={products}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
