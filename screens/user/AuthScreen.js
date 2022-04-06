@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component } from "react";
+import React, { useReducer, useCallback } from "react";
 import {
   View,
   Text,
@@ -11,8 +11,66 @@ import {
 import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch } from "react-redux";
+import * as authActions from "../../store/actions/auth";
+
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"; 
+
+  // formReducer is a reducer function that is called when the user changes the text in the text input or when the user presses the save button
+const formReducer = (state, action) => {
+  if (action.type === "UPDATE") { // if the action is of type update, then we update the state with the new value of the text input
+    const updatedValues = {
+      ...state.inputValues, // we create a new object with the old inputValues object
+      [action.input]: action.value, // and we update the value of the text input with the new value
+    };
+    const updatedValidities = {
+      ...state.inputValidities, // this is the same as the inputValues object, but we update the validities of the text inputs
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true; // we create a new variable that is true by default, and if any of the text inputs are invalid, then we set this variable to false
+    for (const key in updatedValidities) {
+      // we loop through the updatedValidities object and check if any of the text inputs are invalid or not valid
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key]; // we check  if the current text input is valid or not valid and if it is not valid, then we set the updatedFormIsValid to false
+    }
+    return {
+      formIsValid: updatedFormIsValid, // we return the new state of the formIsValid variable  (true or false)
+      inputValidities: updatedValidities, // we return the new state of the inputValidities object  (true or false)
+      inputValues: updatedValues, // we return the new state of the inputValues object  (the value of the text input that the user has entered in the text input field  )
+    };
+  }
+  return state;
+};
+
 // create a component
 const AuthScreen = () => {
+  const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    // we use useReducer to update the state of the form  (the state of the text inputs)
+    inputValues: {
+      email: "",
+      password: "",
+    },
+    inputValidities: {
+      email: false,
+      password: false,
+    },
+    formIsValid: false, // if the user is editing a product, then we set the value of the formIsValid variable to true (if the user is adding a product, then we set the value of the formIsValid variable to false)
+  });
+
+  const signupHandler = () => {
+    dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password));
+  };
+
+  const inputChangeHandler =useCallback( (inputIdentifier, inputValue, inputValidity) => {
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: inputValue,
+      isValid: inputValidity,
+      input: inputIdentifier,
+    });
+  }, [dispatchFormState]);
+ 
   return (
     <KeyboardAvoidingView
       behavior='padding'
@@ -29,8 +87,8 @@ const AuthScreen = () => {
               required
               email
               autoCapitalize='none'
-              errorMessage='Please enter a valid email address'
-              onInputChange={() => {}}
+              errorText='Please enter a valid email address'
+              onInputChange={inputChangeHandler}
               initialValue=''
             />
             <Input
@@ -41,15 +99,15 @@ const AuthScreen = () => {
               required
               minLength={5}
               autoCapitalize='none'
-              errorMessage='Please enter a valid  password'
-              onInputChange={() => {}}
+              errorText='Please enter a valid  password'
+              onInputChange={inputChangeHandler}
               initialValue=''
             />
-            <View  style={styles.buttonContainer}>
-              <Button title='Login' color='#29aaf4' onPress={() => {}} />
+            <View style={styles.buttonContainer}>
+              <Button title='Login' color='#29aaf4' onPress={signupHandler} />
             </View>
             <View style={styles.buttonContainer}>
-              <Button title='Login' color='#29aaf4' onPress={() => {}} />
+              <Button title='Login' color='#29aaf4' onPress={signupHandler} />
             </View>
           </ScrollView>
         </Card>
@@ -77,11 +135,10 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     maxHeight: 400,
     padding: 20,
- },
- buttonContainer: {
-  marginTop: 10,
-  
-  }
+  },
+  buttonContainer: {
+    marginTop: 10,
+  },
 });
 
 export default AuthScreen;
