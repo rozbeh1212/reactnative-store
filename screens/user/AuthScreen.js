@@ -1,5 +1,5 @@
 //import liraries
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback } from "react";
 import {
   View,
   Text,
@@ -14,11 +14,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/auth";
 
-const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE"; 
-
-  // formReducer is a reducer function that is called when the user changes the text in the text input or when the user presses the save button
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+// formReducer is a reducer function that is called when the user changes the text in the text input or when the user presses the save button
 const formReducer = (state, action) => {
-  if (action.type === "UPDATE") { // if the action is of type update, then we update the state with the new value of the text input
+  if (action.type === "UPDATE") {
+    // if the action is of type update, then we update the state with the new value of the text input
     const updatedValues = {
       ...state.inputValues, // we create a new object with the old inputValues object
       [action.input]: action.value, // and we update the value of the text input with the new value
@@ -44,7 +44,7 @@ const formReducer = (state, action) => {
 // create a component
 const AuthScreen = () => {
   const dispatch = useDispatch();
-
+  const [isSignup, setIsSignUp] = useState(false);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     // we use useReducer to update the state of the form  (the state of the text inputs)
     inputValues: {
@@ -58,19 +58,34 @@ const AuthScreen = () => {
     formIsValid: false, // if the user is editing a product, then we set the value of the formIsValid variable to true (if the user is adding a product, then we set the value of the formIsValid variable to false)
   });
 
-  const signupHandler = () => {
-    dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password));
+  const authHandler = () => {
+    let action;
+    if (isSignup) {
+      action = dispatch(
+        authActions.signup(
+          formState.inputValues.email,
+          formState.inputValues.password
+        )
+      );
+    } else {
+      action = authActions.login(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    }
   };
 
-  const inputChangeHandler =useCallback( (inputIdentifier, inputValue, inputValidity) => {
-    dispatchFormState({
-      type: FORM_INPUT_UPDATE,
-      value: inputValue,
-      isValid: inputValidity,
-      input: inputIdentifier,
-    });
-  }, [dispatchFormState]);
- 
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+dispatch(action)  );
+
   return (
     <KeyboardAvoidingView
       behavior='padding'
@@ -104,10 +119,20 @@ const AuthScreen = () => {
               initialValue=''
             />
             <View style={styles.buttonContainer}>
-              <Button title='Login' color='#29aaf4' onPress={signupHandler} />
+              <Button
+                title={isSignup ? "Sign Up" : "Login"}
+                color='#29aaf4'
+                onPress={authHandler}
+              />
             </View>
             <View style={styles.buttonContainer}>
-              <Button title='Login' color='#29aaf4' onPress={signupHandler} />
+              <Button
+                title={`Switch to ${isSignup ? "Login" : "Sign Up"}`}
+                color='#29aaf4'
+                onPress={() => {
+                  setIsSignUp((prevState) => !prevState);
+                }}
+              />
             </View>
           </ScrollView>
         </Card>
