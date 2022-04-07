@@ -44,9 +44,12 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = (productId) => {
-  return async (dispatch) => {
+  
+  return async (dispatch,getState) => {
+        const token = getState().auth.token;
+
     await fetch(
-      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${productId}.json`,
+      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -59,11 +62,12 @@ export const deleteProduct = (productId) => {
 // };
 
 export const createProduct = (title, description, imageUrl, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     // async is a function that returns a promise that is resolved when the product is created.
     const response = await fetch(
       // fetch  product from database and return a promise that is resolved when the product is created
-      "https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products.json",
+      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -95,11 +99,12 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 export const updateProduct = (id, title, description, imageUrl) => {
   // update product action creator with product id, title, description, imageUrl as parameters and return an action object to update
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+     const token = getState().auth.token; // get the token from the auth state to send it to the server and update the product in the database 
     // async is a function that returns a promise that is resolved when the product is created.
     await fetch(
       //
-      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${id}.json`, // requestInfo input is the url of the product  that is fetched from the database  by using the id of the product that is passed to the action creator
+      `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/.products/${id}.json?auth=${token}`, // requestInfo input is the url of the product  that is fetched from the database  by using the id of the product that is passed to the action creator
       {
         method: "PATCH", // patch is a method that is used to patch the product that is fetched from the database  by using the id of the product that is passed
         headers: {
