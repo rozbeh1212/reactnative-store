@@ -27,7 +27,9 @@ export const fetchProducts = () => {
         // loop through the restData object from the server and add it to the loadedproducts array  by using the key property of the loadedproducts object as the id of the product returned from the server
         loadedProducts.push(
           new Product(
-            action.productData.id,
+            //
+            key,
+          //  action.productData.id,
             restData[key].ownerId,
             restData[key].title,
             restData[key].imageUrl,
