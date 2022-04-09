@@ -165,7 +165,7 @@ const AuthScreen = () => {
   );
 };
 
-AuthScreen.navigationOptions = {
+AuthScreen.navigationOptions = { // we set the navigation options of the AuthScreen component to be the same as the navigation options of the ShopScreen component  
   headerTitle: "Authenticate",
 };
 

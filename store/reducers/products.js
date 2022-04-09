@@ -8,8 +8,8 @@ import {
 import Product from "../../models/product";
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((prod) => prod.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 export default (state = initialState, action) => {
@@ -20,14 +20,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products.filter((prod) => prod.ownerId === "u1"),
+        userProducts: action.userProducts,
       };
 
     case CREATE_PRODUCT: // CREATE_PRODUCT is the same as the action.type property in the action object
       const newProduct = new Product( // newProduct is a new instance of Product from the Product model
         // new Date().toString(),
         action.productData.id, // action.productData.id is the same as the id property in the action.produc
-        "u1",
+        action.productData.ownerId, // action.productData.ownerId is the same as the ownerId property in the action.productData
         action.productData.title, // action.productData.title is the same as the title property in the productData object
         action.productData.imageUrl, // action.productData.imageUrl is the same as the imageUrl property in the productData object
         action.productData.description, // action.productData.description is the same as the description property in the productData object

@@ -1,12 +1,13 @@
 //import liraries
 import React, { Component } from "react";
-import { FlatList, Button, Platform, Alert } from "react-native";
+import { FlatList, Button, Platform, Alert,View,Text } from "react-native";
 import ProducItem from "../../components/shop/ProductItem";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
 import colors from "../../constents/Colors";
 import * as productsActions from '../../store/actions/products';
+import { View } from "react-native-web";
 
 
 // create a component
@@ -28,7 +29,14 @@ const UserProductsScreen = (props) => {
          },
        },
      ]);
-   };
+  };
+  
+  if (userProducts.length === 0) {
+    return <View style={{ flex:1, justifyContent:'center', alignItems: 'center' }}>
+    <Text></Text>
+  </View>
+  }
+
   return (
     <FlatList
       data={userProducts}

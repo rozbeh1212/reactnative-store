@@ -5,10 +5,11 @@ export const SET_ORDER = "SET_ORDER"; // this is the action type
 
 export const fetchOreders = () => {
   return async (dispatch, getState) => {
+    const userId = getState().auth.userId; // orders that belong to the user that is logged in
     try {
       // async is a function that returns a promise that is resolved when the product is created.
       const response = await fetch(
-        "https://reactnative-shop-b085d-default-rtdb.firebaseio.com/orders.json"
+        `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/orders/${userId}.json`
         // fetch  product from database and return a promise that is resolved when the product is created
       );
 
@@ -35,6 +36,8 @@ export const fetchOreders = () => {
 export const addOrder = (cartItems, totlalAmount) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId; // the userId from current user that is logged in
+    const date = new Date();
     // fetch  product from database and return a promise that is resolved when the product is created
     const response = await fetch(
       `https://reactnative-shop-b085d-default-rtdb.firebaseio.com/orders.json?auth=${token}`,

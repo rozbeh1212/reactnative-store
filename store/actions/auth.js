@@ -27,8 +27,9 @@ export const signup = (email, password) => {
       throw new Error(message);
     }
     const resData = await response.json(); // this is the response from the server if the response is successful
-    dispatch({ type: SIGNUP, token: resData.idToken , userId: resData.localId});//  we dispatch the action to the reducer this for the user to be signed up and the token and userId are passed to the reducer 
+    dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId });//  we dispatch the action to the reducer this for the user to be signed up and the token and userId are passed to the reducer {}
 
+  }
 }
 export const login = (email, password) => {
   return async (dispatch) => {
@@ -51,7 +52,7 @@ export const login = (email, password) => {
        const errorResData = await response.json();
        const errorId = errorResData.error.message;
        let message = "Something went wrong!";
-       if (errorId === "EMAIL_NOT_FOUND") {
+       if (errorId === "EMAIL_NOT_FOUND") {  //  email not found is from firebase json response  if the email is not found in the database then the error message is displayed  
          message = "This email exists already!";
        }
        throw new Error(message);
