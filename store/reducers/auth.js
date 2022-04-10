@@ -1,4 +1,4 @@
-import { AUTHENTICATE } from "../actions/auth";
+import { AUTHENTICATE,LOGOUT } from "../actions/auth";
 
 const initialState = {
   token: null,
@@ -11,7 +11,9 @@ export default (state = initialState, action) => {
     return {
      token: action.token, // this is the token that is returned from the server when the user logs in to the application 
      userId: action.userId, // this is the userId that is returned from the server when the user logs in to the application
-    };
+      };
+    case LOGOUT:
+      return initialState;
   //  case SIGNUP:
   //   return {
   //    token: action.token, // this is the token that is returned from the server when the user try to sign up to the application  

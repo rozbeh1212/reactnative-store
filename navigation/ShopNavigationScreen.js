@@ -1,11 +1,13 @@
 import React from "react";
 import {
-  createStackNavigator, 
-  createDrawerNavigator, //  createDrawerNavigator create a new drawer navigation navigator 
+  createStackNavigator,
+  createDrawerNavigator, //  createDrawerNavigator create a new drawer navigation navigator
   createAppContainer, // createAppContainer is a function that is used to create the navigation stack
+  DrawerItems, // DrawerItems is a component that is used to render the items in the drawer
   createSwitchNavigator, // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
 } from "react-navigation";
-import { Platform } from "react-native";
+import { Platform, SafeAreaView, Button, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import EditProductScreen from "../screens/user/EditProducScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
@@ -16,7 +18,7 @@ import Colors from "../constents/Colors";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "./screens/StartupScreen";
-
+import * as authActions from "../store/actions/auth";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -98,19 +100,43 @@ const ShopNavigator = createDrawerNavigator(
     contentOptions: {
       activeTintColor: Colors.primary,
     },
+    contentComponent: (props) => {
+      const dispatch = useDispatch();
+
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+            <DrawerNavigatorItems {...props} />
+            <Button
+              title='Logout'
+              color={Colors.primary}
+              onPress={() => {
+                dispatch(authActions.logout());
+                props.navigation.navigate('Auth');
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      );
+    },
   }
 );
 
-const AuthNavigator = createStackNavigator({ 
-Auth: AuthScreen,
-}, {
-  defaultNavOptions: defaultNavOptions,
-})
-const MainNavigator = createSwitchNavigator( // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: AuthScreen,
+  },
+  {
+    defaultNavOptions: defaultNavOptions,
+  }
+);
+const MainNavigator = createSwitchNavigator(
+  // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
   {
     Startup: StartupScreen,
-    Auth: AuthNavigator, 
+    Auth: AuthNavigator,
     Shop: ShopNavigator,
-  })
+  }
+);
 
 export default createAppContainer(MainNavigator);
