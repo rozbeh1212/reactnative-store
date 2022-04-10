@@ -15,6 +15,8 @@ import OrdersScreen from "../screens/shop/OrdersScreen";
 import Colors from "../constents/Colors";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import AuthScreen from "../screens/user/AuthScreen";
+import StartupScreen from "./screens/StartupScreen";
+
 
 const defaultNavOptions = {
   headerStyle: {
@@ -106,6 +108,7 @@ Auth: AuthScreen,
 })
 const MainNavigator = createSwitchNavigator( // createSwitchNavigator is a function that is used to create a stack navigator that is used to switch between the screens and dont allowd user to go back to the previous screen
   {
+    Startup: StartupScreen,
     Auth: AuthNavigator, 
     Shop: ShopNavigator,
   })

@@ -1,7 +1,16 @@
 import { AsyncStorage } from "react-native";
-
+export const AUTHENTICATE = "AUTHENTICATE";
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
+export const authenticate = (userId, token) => {
+  return {
+    
+    type: AUTHENTICATE,
+    userId: userId,
+    token: token,
+
+  }
+}
 export const signup = (email, password) => {
   return async (dispatch) => {
     const response = await fetch(
@@ -29,7 +38,7 @@ export const signup = (email, password) => {
       throw new Error(message);
     }
     const resData = await response.json(); // this is the response from the server if the response is successful
-    dispatch({ type: SIGNUP, token: resData.idToken, userId: resData.localId }); //  we dispatch the action to the reducer this for the user to be signed up and the token and userId are passed to the reducer {}
+    dispatch(authenticate( resData.localId, resData.idTOken)); //  we dispatch the action to the reducer this for the user to be signed up and the token and userId are passed to the reducer {}
         const expirationDate = new Date(
           new Date().getTime() + parseInt(resData.expiresIn) * 1000
         ); // this is the date that the token expires
@@ -67,12 +76,12 @@ export const login = (email, password) => {
       throw new Error(message);
     }
     const resData = await response.json(); // this is the response from the server if the response is successful
-    dispatch({ type: LOGIN, token: resData.idToken, userId: resData.localId }); // we dispatch the action to the reducer to update the state of the application (the state of the token and the userId) this is for the user to be able to log in to the application (the user is able to log in to the application by entering his email and password)
+    dispatch(authenticate(resData.localId, resData.idTOken)); //  we dispatch the action to the reducer this for the user to be signed up and the token and userId are passed to the reducer {}
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     ); // this is the date that the token expires
     saveDataToStorage(resData.idToken, resData.localId, expirationDate); // we call this is to save the token and userId to the device storage
-  };
+  };;
 };
 
 const saveDataToStorage = async (token, userId, expirationDate) => {

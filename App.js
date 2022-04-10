@@ -10,6 +10,7 @@ import cartReducer from "./store/reducers/cart";
 import ordersReducer from "./store/reducers/order";
 import ReduxTHunk from "redux-thunk";
 import authReducer from "./store/reducers/auth";
+import StartupScreen from "./screens/StartupScreen";
 
 // combineReducers is a function that takes an object of reducers and returns a function that combines them into one
 const rootReducer = combineReducers({
